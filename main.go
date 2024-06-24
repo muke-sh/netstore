@@ -1,9 +1,9 @@
 package main
 
 import (
-	"log"
-
+	"fmt"
 	"github.com/muke-sh/netstore/p2p"
+	"log"
 )
 
 func main() {
@@ -13,6 +13,13 @@ func main() {
 		Decoder:       p2p.NOPDecoder{},
 	}
 	tr := p2p.NewTCPTransport(tcpOpts)
+
+	go func() {
+		for {
+			msg := <-tr.Consume()
+			fmt.Printf("%+v\n", msg)
+		}
+	}()
 
 	if err := tr.ListenAndAccept(); err != nil {
 		log.Fatal(err)

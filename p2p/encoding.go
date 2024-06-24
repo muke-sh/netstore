@@ -6,7 +6,7 @@ import (
 )
 
 type Decoder interface {
-	Decode(io.Reader, *Message) error
+	Decode(io.Reader, *RPC) error
 }
 
 type GOBDecoder struct {
@@ -19,7 +19,7 @@ func (dec GOBDecoder) Decode(reader io.Reader, val any) error {
 type NOPDecoder struct {
 }
 
-func (dec NOPDecoder) Decode(reader io.Reader, msg *Message) error {
+func (dec NOPDecoder) Decode(reader io.Reader, msg *RPC) error {
 	buf := make([]byte, 1028)
 
 	n, err := reader.Read(buf)
